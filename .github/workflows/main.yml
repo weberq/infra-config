@@ -18,7 +18,7 @@ jobs:
         echo "ZONE=us-central1-c" >> $GITHUB_ENV
         echo "SSH_USER=weberqbot" >> $GITHUB_ENV
         echo "INSTANCE_IP=34.68.69.253" >> $GITHUB_ENV
-        echo "DEPLOY_SCRIPT=Script.sh" >> $GITHUB_ENV
+        echo "DEPLOY_SCRIPT=script.sh" >> $GITHUB_ENV
       shell: bash
 
     - name: Prepare SSH Key
