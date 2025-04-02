@@ -1,0 +1,2 @@
+stm.weberq.in=8081
+web2.weberq.in=8082
