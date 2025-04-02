@@ -3,7 +3,7 @@
 echo "🚀 Starting deployment process..."
 
 # Define variables
-PROJECT_DIR="/home/infra-config"
+PROJECT_DIR="/home/weberqbot/infra-config"
 
 echo "📦 Pulling latest changes from Git..."
 cd "$PROJECT_DIR" || { echo "❌ Failed to change directory."; exit 1; }
