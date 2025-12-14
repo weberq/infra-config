@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   reverse-proxy:
-    image: traefik:v2.10
+    image: traefik:v3.3
     container_name: traefik
     restart: always
     # Enables the web UI and tells Traefik to listen to docker
