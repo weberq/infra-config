@@ -5,6 +5,8 @@ services:
     image: traefik:v3.3
     container_name: traefik
     restart: always
+    environment:
+      - DOCKER_API_VERSION=1.45 # Required for Traefik v3.3 
     # Enables the web UI and tells Traefik to listen to docker
     command:
       - "--api.insecure=true" # Enable Dashboard (Be careful in production, should protect with basicAuth)
