@@ -1,6 +1,6 @@
 # WeberQ Infrastructure Configuration
 
-This repository manages the core infrastructure for the WeberQ Virtual Machine on Google Cloud Platform (GCP). It automates the setup of Docker, SSH keys, and the Traefik Reverse Proxy, enabling a "Push to Deploy" workflow for multiple applications.
+This repository manages the core infrastructure for the WeberQ Global Pvt Ltd. Virtual Machine on Google Cloud Platform (GCP). It automates the setup of Docker, SSH keys, and the Traefik Reverse Proxy, enabling a "Push to Deploy" workflow for multiple applications.
 
 ## 🚀 Quick Start Guide
 
