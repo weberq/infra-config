@@ -1,0 +1,46 @@
+name: Deploy App to VPSS
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Deploy to VPS
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.VPS_HOST }}       # 34.68.69.253
+          username: ${{ secrets.VPS_USER }}   # weberqbot
+          key: ${{ secrets.VPS_SSH_KEY }}     # Private key corresponding to the public key on server
+          script: |
+            # Define App Config used for directory naming
+            APP_NAME="my-app-name"
+            REPO_URL="git@github.com:${{ github.repository }}.git"
+            PROJECT_DIR="/home/weberqbot/apps/$APP_NAME"
+
+            echo "🚀 Deploying $APP_NAME..."
+
+            # Ensure apps directory exists
+            mkdir -p /home/weberqbot/apps
+
+            # Clone or Pull
+            if [ -d "$PROJECT_DIR" ]; then
+              echo "📂 App directory exists. Pulling latest changes..."
+              cd "$PROJECT_DIR"
+              git pull origin main
+            else
+              echo "✨ Cloning repository..."
+              git clone "$REPO_URL" "$PROJECT_DIR"
+              cd "$PROJECT_DIR"
+            fi
+
+            # Build and Start
+            echo "🐳 Building and Starting Containers..."
+            docker compose up -d --build --remove-orphans
+
+            echo "✅ Deployment of $APP_NAME Complete!"
