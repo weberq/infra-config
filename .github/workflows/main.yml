@@ -17,7 +17,7 @@ jobs:
         echo "INSTANCE_NAME=test" >> $GITHUB_ENV
         echo "ZONE=us-central1-c" >> $GITHUB_ENV
         echo "SSH_USER=weberqbot" >> $GITHUB_ENV
-        echo "INSTANCE_IP=34.68.69.253" >> $GITHUB_ENV
+        echo "INSTANCE_IP=136.113.227.185" >> $GITHUB_ENV
         echo "DEPLOY_SCRIPT=script.sh" >> $GITHUB_ENV
       shell: bash
 
