@@ -34,4 +34,17 @@ else
     echo "✅ Docker installed. You might need to log out and back in for group changes to take effect."
 fi
 
+# Check for Swap and create if missing (Prevents OOM on small VPS)
+if [ $(swapon --show | wc -l) -eq 0 ]; then
+    echo "💾 Setting up 2G Swap File..."
+    sudo fallocate -l 2G /swapfile
+    sudo chmod 600 /swapfile
+    sudo mkswap /swapfile
+    sudo swapon /swapfile
+    echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab
+    echo "✅ Swap created."
+else
+    echo "✅ Swap already enabled."
+fi
+
 echo "✅ Docker setup complete."
