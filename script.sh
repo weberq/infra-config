@@ -9,13 +9,11 @@ echo "📦 Pulling latest changes from Git..."
 cd "$PROJECT_DIR" || { echo "❌ Failed to change directory."; exit 1; }
 
 # Handle Git Pull
-git pull || {
-  echo "Git pull failed, attempting to add safe directory..."
-  git config --global --add safe.directory "$PROJECT_DIR" && git pull || {
-    echo "❌ Git pull failed again. Exiting."
-    exit 1
-  }
-}
+# Handle Git Pull (Force Clean to Avoid Conflicts)
+echo "🔄 Syncing with remote..."
+git config --global --add safe.directory "$PROJECT_DIR"
+git fetch origin main
+git reset --hard origin/main
 
 # 1. Setup Docker if not present
 chmod +x setup_docker.sh
