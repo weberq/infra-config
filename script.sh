@@ -25,6 +25,14 @@ chmod +x setup_keys.sh
 
 # 3. Start/Update Traefik Reverse Proxy
 echo "🚀 Starting Traefik Proxy..."
-docker compose up -d --remove-orphans || { echo "❌ Failed to start Traefik"; exit 1; }
+# Check if user is in docker group but current shell doesn't have it active
+if groups | grep -q '\bdocker\b'; then
+    docker compose up -d --remove-orphans || { echo "❌ Failed to start Traefik"; exit 1; }
+else
+    # Try with 'sg' if user belongs to group but current shell doesn't have it active
+    # This fixes the "permission denied" error on the very first run after installation
+    echo "⚠️  User in docker group but session not updated. Using 'sg'..."
+    sg docker -c "docker compose up -d --remove-orphans" || { echo "❌ Failed to start Traefik"; exit 1; }
+fi
 
 echo "✅ Deployment complete!"
