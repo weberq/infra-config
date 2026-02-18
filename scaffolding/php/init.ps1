@@ -46,3 +46,4 @@ Write-Host "`n✅ Scaffolding Complete!" -ForegroundColor Green
 Write-Host "Next Steps:"
 Write-Host "1. Git Add/Commit/Push these new files."
 Write-Host "2. Add secrets (VPS_HOST, VPS_USER, VPS_SSH_KEY) to your GitHub Repo."
+Write-Host "3. Add GHCR_PAT (Personal Access Token with 'read:packages' scope) to Secrets."
