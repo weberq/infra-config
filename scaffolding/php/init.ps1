@@ -13,6 +13,10 @@ if ([string]::IsNullOrWhiteSpace($AppName)) { Write-Error "App Name is required.
 $DomainName = Read-Host "Enter Domain Name (e.g., app.weberq.in)"
 if ([string]::IsNullOrWhiteSpace($DomainName)) { Write-Error "Domain Name is required."; exit 1 }
 
+$RepoOwner = Read-Host "Enter Repository Owner (GitHub Username/Org) [Default: weberq]"
+if ([string]::IsNullOrWhiteSpace($RepoOwner)) { $RepoOwner = "weberq" }
+$RepoOwner = $RepoOwner.ToLower()
+
 # 2. Define Paths
 $ScriptDir = $PSScriptRoot
 $ProjectRoot = Get-Location
@@ -27,6 +31,7 @@ Write-Host "📄 Generating docker-compose.yml..." -ForegroundColor Yellow
 $ComposeContent = Get-Content "$ScriptDir\docker-compose.yml.template" -Raw
 $ComposeContent = $ComposeContent -replace "{{APP_NAME}}", $AppName
 $ComposeContent = $ComposeContent -replace "{{DOMAIN_NAME}}", $DomainName
+$ComposeContent = $ComposeContent -replace "{{REPO_OWNER}}", $RepoOwner
 Set-Content "$ProjectRoot\docker-compose.yml" $ComposeContent
 Write-Host "   Done (Configured for $DomainName)."
 

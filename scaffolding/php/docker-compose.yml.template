@@ -1,7 +1,6 @@
 
-services:
   web:
-    image: ghcr.io/weberq/{{APP_NAME}}:latest
+    image: ghcr.io/{{REPO_OWNER}}/{{APP_NAME}}:latest
     container_name: {{APP_NAME}}
     restart: unless-stopped
     labels:
