@@ -45,9 +45,9 @@ $WorkflowDir = "$ProjectRoot\.github\workflows"
 
 # 4. Dockerfile
 if ($EnableWWW -eq "y") {
-    $TraefikRule = "Host(``$DomainName``) || Host(``www.$DomainName``)"
+    $TraefikRule = "Host(\``$DomainName\``) || Host(\``www.$DomainName\``)"
 } else {
-    $TraefikRule = "Host(``$DomainName``)"
+    $TraefikRule = "Host(\``$DomainName\``)"
 }
 
 # 5. .dockerignore
