@@ -26,9 +26,9 @@ $AppName = $AppName.ToLower()
 
 # 2. Build Traefik Rule (Proper Docker Escaping)
 if ($EnableWWW -eq "y") {
-    $TraefikRule = "Host(`"$DomainName`") || Host(`"www.$DomainName`")"
+    $TraefikRule = "Host(\`"$DomainName\`") || Host(\`"www.$DomainName\`")"
 } else {
-    $TraefikRule = "Host(`"$DomainName`")"
+    $TraefikRule = "Host(\`"$DomainName\`")"
 }
 
 Write-Host ""
