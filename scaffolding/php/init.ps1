@@ -44,11 +44,10 @@ $ProjectRoot = Get-Location
 $WorkflowDir = "$ProjectRoot\.github\workflows"
 
 # 4. Dockerfile
-if (-not (Test-Path "$ProjectRoot\Dockerfile")) {
-    Copy-Item "$ScriptDir\Dockerfile.template" "$ProjectRoot\Dockerfile"
-    Write-Host "Dockerfile created." -ForegroundColor Green
+if ($EnableWWW -eq "y") {
+    $TraefikRule = "Host(``$DomainName``) || Host(``www.$DomainName``)"
 } else {
-    Write-Warning "Dockerfile already exists. Skipping."
+    $TraefikRule = "Host(``$DomainName``)"
 }
 
 # 5. .dockerignore
