@@ -7,7 +7,5 @@ vendor
 *.tar
 *.sql
 .env
-docker-compose.yml
 .github
 Dockerfile.template
-docker-compose.yml.template

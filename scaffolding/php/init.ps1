@@ -1,11 +1,11 @@
 # -----------------------------------------------------------
-# WeberQ PHP Infrastructure Scaffolding Tool (Stable)
+# WeberQ PHP Infrastructure Scaffolding Tool (Lean Version)
 # Usage: ./init.ps1
 # -----------------------------------------------------------
 
 Write-Host ""
-Write-Host "WeberQ PHP Infrastructure Scaffolding (GHCR Ready)" -ForegroundColor Cyan
-Write-Host "---------------------------------------------------" -ForegroundColor DarkGray
+Write-Host "WeberQ PHP Infrastructure Scaffolding (GHCR + SHA Deploy)" -ForegroundColor Cyan
+Write-Host "-----------------------------------------------------------" -ForegroundColor DarkGray
 
 # 1. Inputs
 $AppName = Read-Host "Enter Application Name (e.g., my-php-app)"
@@ -20,19 +20,12 @@ if ([string]::IsNullOrWhiteSpace($DomainName)) {
     exit 1
 }
 
-$RepoOwner = Read-Host "Enter Repository Owner (GitHub Username/Org) [Default: weberq]"
-if ([string]::IsNullOrWhiteSpace($RepoOwner)) {
-    $RepoOwner = "weberq"
-}
-
-$RepoOwner = $RepoOwner.ToLower()
 $AppName = $AppName.ToLower()
 
 Write-Host ""
 Write-Host "Configuration Summary:" -ForegroundColor Yellow
 Write-Host "  App Name: $AppName"
 Write-Host "  Domain  : $DomainName"
-Write-Host "  Owner   : $RepoOwner"
 Write-Host ""
 
 # 2. Paths
@@ -64,7 +57,6 @@ vendor
 *.sql
 .env
 .github
-docker-compose.yml
 Dockerfile.template
 init.ps1
 "@
@@ -83,7 +75,6 @@ if (-not (Test-Path $WorkflowDir)) {
 $DeployTemplate = Get-Content "$ScriptDir\deploy.yml.template" -Raw
 $DeployTemplate = $DeployTemplate -replace "{{APP_NAME}}", $AppName
 $DeployTemplate = $DeployTemplate -replace "{{DOMAIN_NAME}}", $DomainName
-$DeployTemplate = $DeployTemplate -replace "{{REPO_OWNER}}", $RepoOwner
 
 Set-Content "$WorkflowDir\deploy.yml" $DeployTemplate
 
@@ -92,7 +83,7 @@ Write-Host "GitHub workflow generated." -ForegroundColor Green
 # 6. Final Instructions
 Write-Host ""
 Write-Host "Scaffolding Complete!" -ForegroundColor Cyan
-Write-Host "---------------------------------------------------"
+Write-Host "-----------------------------------------------------------"
 Write-Host "Next Steps:"
 Write-Host "1. git add ."
 Write-Host "2. git commit -m 'Infra setup'"
