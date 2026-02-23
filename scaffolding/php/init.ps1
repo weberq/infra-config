@@ -24,11 +24,11 @@ $EnableWWW = Read-Host "Does this domain require www support? (y/n)"
 
 $AppName = $AppName.ToLower()
 
-# 2. Build Traefik Rule (Proper Docker Escaping)
+# 2. Build Traefik Rule (ESCAPED for Bash)
 if ($EnableWWW -eq "y") {
-    $TraefikRule = "Host(\`"$DomainName\`") || Host(\`"www.$DomainName\`")"
+    $TraefikRule = "Host(\``$DomainName\``) || Host(\``www.$DomainName\``)"
 } else {
-    $TraefikRule = "Host(\`"$DomainName\`")"
+    $TraefikRule = "Host(\``$DomainName\``)"
 }
 
 Write-Host ""
@@ -39,18 +39,21 @@ Write-Host "  Rule     : $TraefikRule"
 Write-Host ""
 
 # 3. Paths
-$ScriptDir = $PSScriptRoot
+$ScriptDir   = $PSScriptRoot
 $ProjectRoot = Get-Location
 $WorkflowDir = "$ProjectRoot\.github\workflows"
 
-# 4. Dockerfile
-if ($EnableWWW -eq "y") {
-    $TraefikRule = "Host(\``$DomainName\``) || Host(\``www.$DomainName\``)"
+# 4. Create Dockerfile from Template
+$DockerfilePath = "$ProjectRoot\Dockerfile"
+
+if (-not (Test-Path $DockerfilePath)) {
+    Copy-Item "$ScriptDir\Dockerfile.template" $DockerfilePath
+    Write-Host "Dockerfile created from template." -ForegroundColor Green
 } else {
-    $TraefikRule = "Host(\``$DomainName\``)"
+    Write-Warning "Dockerfile already exists. Skipping."
 }
 
-# 5. .dockerignore
+# 5. Create .dockerignore
 $DockerIgnorePath = "$ProjectRoot\.dockerignore"
 
 if (-not (Test-Path $DockerIgnorePath)) {
@@ -72,9 +75,11 @@ init.ps1
 
     Set-Content -Path $DockerIgnorePath -Value $dockerIgnoreContent
     Write-Host ".dockerignore created." -ForegroundColor Green
+} else {
+    Write-Warning ".dockerignore already exists. Skipping."
 }
 
-# 6. GitHub Workflow
+# 6. Create GitHub Workflow
 if (-not (Test-Path $WorkflowDir)) {
     New-Item -ItemType Directory -Path $WorkflowDir -Force | Out-Null
 }
@@ -85,6 +90,9 @@ $DeployTemplate = $DeployTemplate -replace "{{TRAEFIK_RULE}}", $TraefikRule
 
 Set-Content "$WorkflowDir\deploy.yml" $DeployTemplate
 
+Write-Host "GitHub workflow generated." -ForegroundColor Green
+
+# 7. Final Instructions
 Write-Host ""
 Write-Host "Scaffolding Complete!" -ForegroundColor Cyan
 Write-Host "----------------------------------------------------------------"
