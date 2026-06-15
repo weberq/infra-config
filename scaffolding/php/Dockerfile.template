@@ -11,7 +11,14 @@ RUN apt-get update && apt-get install -y \
 
 RUN a2enmod rewrite
 
+# Composer (vendor/ is .dockerignored and gitignored — deps are built here)
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
+
 WORKDIR /var/www/html
+
+# Install PHP deps first for better layer caching (only re-runs when manifests change)
+COPY composer.json composer.lock ./
+RUN composer install --no-dev --optimize-autoloader --no-interaction --no-progress
 
 COPY . .
 
